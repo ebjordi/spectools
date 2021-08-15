@@ -2,7 +2,7 @@ import astropy.io.fits as pf
 from specutils.spectra import Spectrum1D, SpectralRegion
 from specutils.fitting import fit_continuum,fit_generic_continuum
 from astropy.modeling.models import Polynomial1D,Const1D,Chebyshev1D
-
+from specutils.manipulation import LinearInterpolatedResampler
 
 def extract_line(file,center,order):
     lines={5015: 17,
@@ -28,3 +28,9 @@ def extract_line(file,center,order):
     vel_a=pri(fase)
     vel_b=sec(fase)
     return line,float(vel_a),float(fase),vhelio
+
+def resample(spectrum):
+    resampler = LinearInterpolatedResampler(extrapolation_treatment='zero_fill')
+    x = np.linspace(sp.spectral_axis[0].value,sp.spectral_axis[-1].value,2048)
+    return resampler.resample1d(spectrum,x*u.AA)
+
