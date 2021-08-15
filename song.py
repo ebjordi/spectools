@@ -30,7 +30,8 @@ def extract_line(file,center,order):
     return line,float(vel_a),float(fase),vhelio
 
 def resample(spectrum):
+    """Return a resampled spectrum with equidistant spectral axis"""
     resampler = LinearInterpolatedResampler(extrapolation_treatment='zero_fill')
-    x = np.linspace(sp.spectral_axis[0].value,sp.spectral_axis[-1].value,2048)
+    x = np.linspace(sppectrum.spectral_axis[0].value,spectrum.spectral_axis[-1].value,2048)
     return resampler.resample1d(spectrum,x*u.AA)
 
