@@ -6,8 +6,6 @@ from specutils.manipulation import LinearInterpolatedResampler
 from pyspeckit import Spectrum
 
 def extract_line(file,center,order,**kwargs):
-    lines={5015: 17,
-           5811: 34}
     data = pf.getdata(file) # Get the data
     header = pf.getheader(file) # Get the full header
     x = data[3,order,:]
