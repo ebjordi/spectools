@@ -27,7 +27,7 @@ def resample(spectrum):
     """Return a resampled spectrum with equidistant spectral axis"""
     resampler = LinearInterpolatedResampler(extrapolation_treatment='zero_fill')
     x = np.linspace(spectrum.spectral_axis[0].value,spectrum.spectral_axis[-1].value,2048)
-    return resampler.resample1d(spectrum,x*u.AA)
+    return resampler.resample1d(spectrum,x*u.Angstrom)
 
 def save(spectrum,name):
     new_spectrum = Spectrum(xarr=spectrum.spectral_axis, data = spectrum.flux,
