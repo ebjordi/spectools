@@ -6,9 +6,9 @@ from specutils.manipulation import LinearInterpolatedResampler
 from pyspeckit import Spectrum
 
 def extract_line(file,center,order,**kwargs):
-"Extract line from SONG spectrum and fit fit_continuum. For usage on other
-lines, `exclude_regions` in `fit` "
-data = pf.getdata(file) # Get the data
+    "Extract line from SONG spectrum and fit fit_continuum. For usage on other
+        lines, `exclude_regions` in `fit` "
+    data = pf.getdata(file) # Get the data
     header = pf.getheader(file) # Get the full header
     x = data[3,order,:]
     y = data[0,order,:]
@@ -29,9 +29,13 @@ def resample(spectrum):
     x = np.linspace(spectrum.spectral_axis[0].value,spectrum.spectral_axis[-1].value,2048)
     return resampler.resample1d(spectrum,x*u.Angstrom)
 
-def save(spectrum,name):
+def save(spectrum,name, header = None):
+    """The only method I know so far to save a custom spectrum. Requires
+    equidistant spectral_axis"""
+    if header is None:
+        header = spectrum.header
     new_spectrum = Spectrum(xarr=spectrum.spectral_axis, data = spectrum.flux,
-                           header=spectrum.header)
-    new_spectrum.write(name+'.fits',type='fits')
+                           header=header)
+    new_spectrum.write(name + '.fits', type='fits')
 
 
