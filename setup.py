@@ -7,5 +7,12 @@ setup(name='spectools',
       author='Jordi Eguren Brown',
       author_email='jordi.eguren.brown',
       license='MIT',
-      packages=['spectools'],
-      zip_safe=False)
+      packages=['spectools','orbit'],
+      zip_safe=False,
+      install_requires=[
+      "numpy",
+      "pandas",
+      "astropy",
+      "specutils",
+      "pyspeckit",
+      "scipy")
