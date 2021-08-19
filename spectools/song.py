@@ -18,7 +18,6 @@ def extract_line(file,center,order,regions,**kwargs):
     line = (line / fit(x*u.Angstrom))
     return line, header
 
-
 def resample(spectrum):
     """Return a resampled spectrum with equidistant spectral axis"""
     resampler = LinearInterpolatedResampler(extrapolation_treatment='zero_fill')
