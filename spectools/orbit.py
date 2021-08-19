@@ -1,14 +1,13 @@
 import numpy as np
+import pandas as pd
 
-
-def phi( HDJ, T0 = 245780.91, P = 29.1325, mean_anomaly = False):
-    """Returns phase given orbital parameters, default parameteres are for i Orionis params
-    found in Eguren 2018"""
-
+def phase( HDJ, T0 = 2455608.29, P = 29.1350, mean_anomaly = False):
+    """Returns phase given orbital parameters, default parameteres are for i 
+    Orionis params updated to Eguren 2021""" 
     phase = (HDJ - T0) / P
     if mean_anomaly:
         phase = 2 * np.pi * phase
-    return fases - int(fases) 
+    return phase - int(phase)
 
 def excentric_anomaly(phi, T0 = 2455608.11, P = 29.1350, e = 0.713):
     """Returns excentric anomaly given a mean anomaly(phase) and other orbital parameters
@@ -45,3 +44,14 @@ def true_anomaly(excentric_anomaly, e = 0.732):
         if theta < 0:
             theta = theta + 2 * np.pi
     return theta
+
+
+def orbit_function(kepler_file : str):
+    """Given a kepler output file returns interpolated funtions for primary and
+    secondary components of a binary system"""
+    names = ['fase','vr-p','vr-s']
+    df = pd.read_table(kepler_file,names=names,sep='\s+', skiprows=1 ,index_col=False)
+    
+    primary =   interp1d(df["fase"],df["vr-p"], kind='cubic')
+    secondary = interp1d(df["fase"],df["vr-s"], kind='cubic')
+    return primary, secondary
