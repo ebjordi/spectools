@@ -5,7 +5,7 @@ from astropy.modeling.models import Chebyshev1D
 from specutils.manipulation import LinearInterpolatedResampler
 from pyspeckit import Spectrum
 
-def extract_line(file,center,order,**kwargs):
+def extract_line(file,center,order,regions,**kwargs):
     "Extract line from SONG spectrum and fit fit_continuum. For usage on other
         lines, `exclude_regions` in `fit` "
     data = pf.getdata(file) # Get the data
@@ -14,11 +14,7 @@ def extract_line(file,center,order,**kwargs):
     y = data[0,order,:]
     blaze=data[2,order,:]
     line = Spectrum1D(flux=(y/blaze)*u.adu, spectral_axis=x*u.Angstrom, **kwargs)
-    fit = fit_generic_continuum(line,model=Chebyshev1D(4),exclude_regions=[
-                                    SpectralRegion(line.spectral_axis[0],line.spectral_axis[100]),
-                                    SpectralRegion((line_0-3.)*u.Angstrom,(line_0+4.)*u.Angstrom)
-                                    ])
-
+    fit = fit_generic_continuum(line,model=Chebyshev1D(4),exclude_regions=regions)
     line = (line / fit(x*u.Angstrom))
     return line, header
 
