@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from disutils.core import setup
+from distutils.core import setup
 
 setup(name='spectools',
       version='0.1',
@@ -8,12 +8,4 @@ setup(name='spectools',
       author='Jordi Eguren Brown',
       author_email='jordi.eguren.brown',
       license='MIT',
-      py_modules=['spectools'],
-      zip_safe=False,
-      install_requires=[
-      "numpy",
-      "pandas",
-      "astropy",
-      "specutils",
-      "pyspeckit",
-      "scipy"])
+      py_modules=['spectools.orbit','spectools.utils','spectools.hermes','spectools.song'])
