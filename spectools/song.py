@@ -27,7 +27,7 @@ def resample(spectrum):
 def save(spectrum,name, header = None):
     """The only method I know so far to save a custom spectrum. Requires
     equidistant spectral_axis"""
-    if hasattr(spectrum,header):
+    if hasattr(spectrum,'header'):
         header = spectrum.header
     new_spectrum = Spectrum(xarr=spectrum.spectral_axis, data = spectrum.flux,
                            header=header)
