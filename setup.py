@@ -1,4 +1,5 @@
-from setuptools import setup
+#!/usr/bin/env python
+from disutils.core import setup
 
 setup(name='spectools',
       version='0.1',
@@ -7,7 +8,7 @@ setup(name='spectools',
       author='Jordi Eguren Brown',
       author_email='jordi.eguren.brown',
       license='MIT',
-      packages=['spectools'],
+      py_modules=['spectools'],
       zip_safe=False,
       install_requires=[
       "numpy",
