@@ -7,6 +7,7 @@ from pyspeckit import Spectrum
 
 def extract_line(file,center,order,regions,**kwargs):
     """Extract line from SONG spectrum and fit fit_continuum. 
+    SONG spectra is [5,51,2048]. axis x holds data at x=0, dispersion axis
     For usage on other lines, `exclude_regions` in `fit` """
     data = pf.getdata(file) # Get the data
     header = pf.getheader(file) # Get the full header
@@ -18,7 +19,7 @@ def extract_line(file,center,order,regions,**kwargs):
     line = (line / fit(x*u.Angstrom))
     return line, header
 
-def resample(spectrum):
+def equidist_resample(spectrum):
     """Return a resampled spectrum with equidistant spectral axis"""
     resampler = LinearInterpolatedResampler(extrapolation_treatment='zero_fill')
     x = np.linspace(spectrum.spectral_axis[0].value,spectrum.spectral_axis[-1].value,2048)
