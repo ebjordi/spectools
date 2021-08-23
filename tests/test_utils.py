@@ -1,5 +1,19 @@
 import pytest
+from spectools.song import *
 
-@pytest.fixture(scope='module'
+@pytest.fixture
+def spectrum(filename):
+    return 
+
+def resampled_spectrum(spectrum):
+
+    return equidistant_resample()
+
 def test_equidist_resample(ResampledSpectrum):
+    expected_delta = (ResampledSpectrum.spectral_axis[-1] -  ResampledSpectrum.spectral_axis[0]) / len(ResampledSpectrum.spectral_axis)
+    assert ex
 
+
+def test_get_keyword(filename):
+    header = pf.getheader(filename):
+        assert header['INFORM'] == 'FITS'
