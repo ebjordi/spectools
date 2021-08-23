@@ -10,7 +10,7 @@ def extract_spectrum(filename, normalized = True):
     wave = wavelength(header)
     if normalized:
         return wave,data[0],header
-    return wave,data[1],header
+    return Spectrum1d(flux=data[1],spectral_axis=data[0]),header
 
 def orbit_function(kepler_file : str):
     """Given a kepler output file returns interpolated funtions for primary and
