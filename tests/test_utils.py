@@ -1,19 +1,12 @@
 import pytest
-from spectools.song import *
+from spectools.utils import *
+import astropy.io.fits as pf
 
 @pytest.fixture
-def spectrum(filename):
-    return 
+def header():
+    filename = 'data/s1_2016-10-12T04-33-07_ext.fits'
+    return pf.getheader(filename)
 
-def resampled_spectrum(spectrum):
-
-    return equidistant_resample()
-
-def test_equidist_resample(ResampledSpectrum):
-    expected_delta = (ResampledSpectrum.spectral_axis[-1] -  ResampledSpectrum.spectral_axis[0]) / len(ResampledSpectrum.spectral_axis)
-    assert ex
-
-
-def test_get_keyword(filename):
-    header = pf.getheader(filename):
-        assert header['INFORM'] == 'FITS'
+def test_get_keyword(header):
+    keyword = get_keyword(header, 'IMFORM')
+    assert keyword == 'FITS'
