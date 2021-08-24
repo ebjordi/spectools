@@ -1,4 +1,5 @@
 import astropy.io.fits as pf
+from numpy import array as nparray
 
 
 def get_keyword(header,keyword : str):
@@ -8,4 +9,4 @@ def get_keyword(header,keyword : str):
 
 def wavelength(header):
     wave = [header['CRVAL1'] + header['CDELT1'] * i for i in range(header['NAXIS1'])]
-    return wave
+    return nparray(wave)
