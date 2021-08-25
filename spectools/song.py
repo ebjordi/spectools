@@ -19,16 +19,18 @@ def extract_line(file, order, regions = None, **kwargs):
     line = Spectrum1D(         flux = (y/blaze) * u.adu,
                       spectral_axis = x * u.Angstrom,
                                             **kwargs)
-    fit = fit_generic_continuum(line, model=Chebyshev1D(4), exclude_regions=regions)
+    fit = fit_generic_continuum(line, 
+                                model=Chebyshev1D(4),
+                                exclude_regions=regions)
     line /= fit(x * u.Angstrom)
     return line, header
 
 def equidistant_resample(spectrum):
-    """Return a resampled spectrum with equidistant spectral axis"""
+    """Return a resampled Spectrumi1D with equidistant spectral axis"""
     resampler = LinearInterpolatedResampler(extrapolation_treatment='zero_fill')
     x = np.linspace(spectrum.spectral_axis[0].value,
                     spectrum.spectral_axis[-1].value,
-                    2048)
+                    len(spectrum.speactral_axis))
     return resampler.resample1d(spectrum, x * u.Angstrom)
 
 def save(spectrum, filename, header = None):
