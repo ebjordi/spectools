@@ -1,6 +1,14 @@
+from spectools.song import *
 
-# 
-# def resampled_spectrum(spectrum)
+
+
+def test_extract_line():
+    filename = 'data/song_spectrum.fits'
+    line,_ = extract_line(filename, 24)
+    assert len(line.spectral_axis) == 2048  
+    #agregar algún otro despues
+
+# def resampled_spectrum(spectrum)i
 # 
 #     return equidistant_resample()
 # 
