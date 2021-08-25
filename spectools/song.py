@@ -5,6 +5,7 @@ from astropy.modeling.models import Chebyshev1D
 import astropy.units as u
 from specutils.manipulation import LinearInterpolatedResampler
 from pyspeckit import Spectrum
+import numpy as np
 
 def extract_line(file, order, regions = None, **kwargs):
     """Extract line from SONG spectrum and fit fit_continuum and returns as
@@ -30,7 +31,7 @@ def equidistant_resample(spectrum):
     resampler = LinearInterpolatedResampler(extrapolation_treatment='zero_fill')
     x = np.linspace(spectrum.spectral_axis[0].value,
                     spectrum.spectral_axis[-1].value,
-                    len(spectrum.speactral_axis))
+                    len(spectrum.spectral_axis))
     return resampler.resample1d(spectrum, x * u.Angstrom)
 
 def save(spectrum, filename, header = None):
