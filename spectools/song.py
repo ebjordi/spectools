@@ -22,7 +22,7 @@ def extract_line(file, order, regions = None, **kwargs):
     line /= fit(x * u.Angstrom)
     return line, header
 
-def equidist_resample(spectrum):
+def equidistant_resample(spectrum):
     """Return a resampled spectrum with equidistant spectral axis"""
     resampler = LinearInterpolatedResampler(extrapolation_treatment='zero_fill')
     x = np.linspace(spectrum.spectral_axis[0].value,
