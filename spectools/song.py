@@ -5,8 +5,9 @@ from astropy.modeling.models import Chebyshev1D
 from specutils.manipulation import LinearInterpolatedResampler
 from pyspeckit import Spectrum
 
-def extract_line(file,center,order,regions,**kwargs):
-    """Extract line from SONG spectrum and fit fit_continuum. 
+def extract_line(file,order,regions = None,**kwargs):
+    """Extract line from SONG spectrum and fit fit_continuum and returns as
+    `specutils.Spectrum1D` 
     SONG spectra is [5,51,2048]. axis x holds data at x=0, dispersion axis
     For usage on other lines, `exclude_regions` in `fit` """
     data = pf.getdata(file) # Get the data
@@ -16,7 +17,7 @@ def extract_line(file,center,order,regions,**kwargs):
     blaze=data[2,order,:]
     line = Spectrum1D(flux=(y/blaze)*u.adu, spectral_axis=x*u.Angstrom, **kwargs)
     fit = fit_generic_continuum(line,model=Chebyshev1D(4),exclude_regions=regions)
-    line = (line / fit(x*u.Angstrom))
+    line /= fit(x*u.Angstrom))
     return line, header
 
 def equidist_resample(spectrum):
@@ -25,13 +26,21 @@ def equidist_resample(spectrum):
     x = np.linspace(spectrum.spectral_axis[0].value,spectrum.spectral_axis[-1].value,2048)
     return resampler.resample1d(spectrum,x*u.Angstrom)
 
-def save(spectrum,name, header = None):
+def save(spectrum, filename, header = None):
     """The only method I know so far to save a custom spectrum. Requires
-    equidistant spectral_axis"""
+        equidistant `spectral_axis` and pyspeckit to save
+        spectrum: `spectutils.Spectrum1D`
+        filename: str output filename with or without '.fits'
+        header: astropy or dict() idk you're not my dad
+    """
+    if '.fits' not in filename:
+        filename += '.fits'
     if hasattr(spectrum,'header'):
         header = spectrum.header
-    new_spectrum = Spectrum(xarr=spectrum.spectral_axis, data = spectrum.flux,
-                           header=header)
-    new_spectrum.write(name + '.fits', type='fits')
+
+    new_spectrum = Spectrum(xarr=spectrum.spectral_axis,
+                            data = spectrum.flux,
+                            header=header)
+    new_spectrum.write(filename, type='fits')
 
 
