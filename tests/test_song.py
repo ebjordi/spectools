@@ -1,6 +1,7 @@
 from spectools.song import *
 import pytest
 from specutils import Spectrum1D
+from numpy.testing import assert_allclose
 
 @pytest.fixture
 def song_spectrum():
@@ -13,8 +14,6 @@ def test_extract_line(song_spectrum):
 
 def test_equidist_resample(song_spectrum):
     resampled_spectrum = equidistant_resample(song_spectrum[0])
-    expected_delta = (song_spectrum[0].spectral_axis[-1] -
-                      song_spectrum[0].spectral_axis[0]) / len(song_spectrum[0].spectral_axis)
     delta = resampled_spectrum.spectral_axis.value[1:] - resampled_spectrum.spectral_axis.value[:-1]
-    assert delta.all == expected_delta.value
+    assert_allclose(delta[1:-1],delta[2])
 
