@@ -2,6 +2,7 @@ import astropy.io.fits as pf
 from specutils.spectra import Spectrum1D, SpectralRegion
 from specutils.fitting import fit_generic_continuum
 from astropy.modeling.models import Chebyshev1D
+import astropy.units as u
 from specutils.manipulation import LinearInterpolatedResampler
 from pyspeckit import Spectrum
 
