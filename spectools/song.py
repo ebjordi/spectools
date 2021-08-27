@@ -41,7 +41,7 @@ def save(spectrum, filename, header = None):
         filename: str output filename with or without '.fits'
         header: astropy or dict() idk you're not my dad
     """
-    if '.fits' not in filename:
+    if not filename.endswith('.fits'):
         filename += '.fits'
     if hasattr(spectrum,'header'):
         header = spectrum.header
