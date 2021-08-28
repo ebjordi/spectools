@@ -3,7 +3,8 @@ import pytest
 from specutils import Spectrum1D
 from numpy.testing import assert_allclose
 import os
-@pytest.fixture
+
+@pytest.fixture(scope='module')
 def song_spectrum():
     filename = 'data/song_spectrum.fits'
     return extract_line(filename, 24)
