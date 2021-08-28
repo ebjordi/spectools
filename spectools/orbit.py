@@ -7,7 +7,7 @@ def phase( JD, T0 = 2455608.29, P = 29.1350, mean_anomaly = False):
     phase = (JD - T0) / P
     phase -= int(phase)
     if mean_anomaly:
-        phase *= 2 * np.pi 
+        phase = phase * 2. * np.pi 
     return phase
 
 def excentric_anomaly(phi, T0 = 2455608.11, P = 29.1350, e = 0.713,
