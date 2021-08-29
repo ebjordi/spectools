@@ -11,7 +11,7 @@ def phase( JD, T0 = 2455608.29, P = 29.1350, mean_anomaly = False):
         pha = 2*np.pi*pha
     return pha
 
-def excentric_anomaly(phi, T0 = 2455608.11, P = 29.1350, e = 0.713,
+def excentric_anomaly(phi, T0 = 2455608.29, P = 29.1350, e = 0.732,
                       mean_anomaly = False):
     """Returns excentric anomaly given a mean anomaly(phase) and other orbital parameters
     Default values are for i Ori ofund in Eguren 2018"""
