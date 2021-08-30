@@ -27,11 +27,11 @@ def excentric_anomaly(phi, T0 = 2455608.29, P = 29.1350, e = 0.732,
     no_convergence = True
     while no_convergence:
         contador += 1
-        E = E_0 - (( E_0 - e * np.sin(E_0) - phi)/ (1 - e * np.cos(E_0)))
-        if abs(E - E_0).all() < 1e-6:
+        E = E0 - (( E0 - e * np.sin(E0) - phi)/ (1 - e * np.cos(E0)))
+        if abs(E - E0).all() < 1e-6:
             return E
         else:
-            E_0 = E
+            E0 = E
         if contador > 10000:
             raise("Too many iteration")
 
