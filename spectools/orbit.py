@@ -3,15 +3,15 @@ import pandas as pd
 
 def phase( JD, T0 = 2455608.29, P = 29.1350, mean_anomaly = False):
     """Returns phase given orbital parameters, default parameteres are for i 
-    Orionis params updated to Eguren 2021""" 
-    if isinstance(JD, (np.ndarray,list)): 
-        T0 = T0 * np.ones_like(JD)
-        JD = np.array(JD)
-        pha = (JD - T0) / P
-        pha = pha - pha.astype(int)
-    elif isinstance(JD,float):
-        pha = (JD - T0) / P
-        pha = pha - int(pha)
+    Orionis params updated to Eguren 2021"""
+    JD = JD * np.ones_like(JD)
+    T0 = T0 * np.ones_like(JD)
+    pha = (JD - T0) / P
+    pha = pha - pha.astype(int)
+    if isinstance(pha,np.float64):
+        if pha < 0: pha += 1
+    else:
+        pha[pha<0.] += 1. 
     if mean_anomaly:
         return 2*np.pi*pha
     return pha
@@ -20,6 +20,7 @@ def excentric_anomaly(phi, T0 = 2455608.29, P = 29.1350, e = 0.732,
                       mean_anomaly = False):
     """Returns excentric anomaly given a mean anomaly(phase) and other orbital parameters
     Default values are for i Ori ofund in Eguren 2018"""
+    phi = phi * np.ones_like(phi)
     E0 = phi * np.ones_like(phi)
     if not mean_anomaly:
         E0 =  E0 * 2 * np.pi
