@@ -32,9 +32,10 @@ def excentric_anomaly(phi, e = 0.732, mean_anomaly = False):
         if isinstance(E, np.float64):
             if np.isclose(E, E0): return E
         elif np.allclose(E, E0):  return E
-        else: E0 = E
+        E0 = E
         if count > 10000:
-            raise("Too many iteration")
+            print(count)
+            raise ValueError("Too many iteration")
 
 def true_anomaly(excentric_anomaly, e = 0.732):
     """Returns true anomaly give an excentric anomaly and excentricity"""
