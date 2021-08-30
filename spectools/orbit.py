@@ -16,24 +16,24 @@ def phase( JD, T0 = 2455608.29, P = 29.1350, mean_anomaly = False):
         return 2*np.pi*pha
     return pha
 
-def excentric_anomaly(phi, T0 = 2455608.29, P = 29.1350, e = 0.732,
-                      mean_anomaly = False):
+def excentric_anomaly(phi, e = 0.732, mean_anomaly = False):
     """Returns excentric anomaly given a mean anomaly(phase) and other orbital parameters
     Default values are for i Ori ofund in Eguren 2018"""
     phi = phi * np.ones_like(phi)
     E0 = phi * np.ones_like(phi)
     if not mean_anomaly:
         E0 =  E0 * 2 * np.pi
-    contador = 0
+        phi =  phi * 2 * np.pi
+    count = 0
     no_convergence = True
     while no_convergence:
-        contador += 1
+        count += 1
         E = E0 - (( E0 - e * np.sin(E0) - phi)/ (1 - e * np.cos(E0)))
-        if abs(E - E0).all() < 1e-6:
-            return E
-        else:
-            E0 = E
-        if contador > 10000:
+        if isinstance(E, np.float64):
+            if np.isclose(E, E0): return E
+        elif np.allclose(E, E0):  return E
+        else: E0 = E
+        if count > 10000:
             raise("Too many iteration")
 
 def true_anomaly(excentric_anomaly, e = 0.732):
