@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-def phase( JD, T0 = 2455608.29, P = 29.1350, mean_anomaly = False):
+def phase( JD, T0 = 55608.29, P = 29.1333, mean_anomaly = False):
     """Returns phase given orbital parameters, default parameteres are for i 
     Orionis params updated to Eguren 2021"""
     JD = JD * np.ones_like(JD)
@@ -16,7 +16,7 @@ def phase( JD, T0 = 2455608.29, P = 29.1350, mean_anomaly = False):
         return 2*np.pi*pha
     return pha
 
-def excentric_anomaly(phi, e = 0.732, mean_anomaly = False):
+def excentric_anomaly(phi, e = 0.734, mean_anomaly = False):
     """Returns excentric anomaly given a mean anomaly(phase) and other orbital parameters
     Default values are for i Ori ofund in Eguren 2018"""
     phi = phi * np.ones_like(phi)
@@ -37,7 +37,7 @@ def excentric_anomaly(phi, e = 0.732, mean_anomaly = False):
             print(count)
             raise ValueError("Too many iteration")
 
-def true_anomaly(excentric_anomaly, e = 0.732):
+def true_anomaly(excentric_anomaly, e = 0.734):
     """Returns true anomaly give an excentric anomaly and excentricity"""
 
 
