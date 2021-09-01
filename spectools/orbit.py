@@ -51,15 +51,18 @@ def true_anomaly(excentric_anomaly, e = 0.734):
     return theta
 
 def rv(true_anomaly, K = 108.3, e=0.734,omega = 126.3,gamma = 34):
+    """Return an array of radial velocities from input true anomalies and an
+    orbital solution"""
     ω = omega * np.pi / 180
     θ = true_anomaly
     Vrad = K * (np.cos(θ + ω) + e * np.cos(ω))
     return Vrad + gamma
 
 def velocity_curve_jd(JD, T0 = 57880.63, P = 29.1333, e = 0.734, K = 108.3, omega = 126.3, gamma = 34):
+    
     φ = phase(JD, T0 =T0 ,P = P)
     E = excentric_anomaly(φ, e=e)
-    θ = true_anomaly(E, e = e)
+    θ =  true_anomaly(E, e = e)
     vr = rv(θ, K = K, omega = omega, gamma = gamma)
     return vr
 
