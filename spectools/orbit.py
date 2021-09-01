@@ -57,17 +57,17 @@ def rv(true_anomaly, K = 108.3, e=0.734,omega = 126.3,gamma = 34):
     return Vrad + gamma
 
 def velocity_curve_jd(JD, T0 = 57880.63, P = 29.1333, e = 0.734, K = 108.3, omega = 126.3, gamma = 34):
-    φ = phase(JD,T0=T0,P=P)
+    φ = phase(JD, T0 =T0 ,P = P)
     E = excentric_anomaly(φ, e=e)
     θ = true_anomaly(E, e = e)
-    vr = rv(θ,K=K,omega=omega,gamma=gamma) 
+    vr = rv(θ, K = K, omega = omega, gamma = gamma)
     return vr
 
 def velocity_curve_from_phase(points = 100, a = 0, b = 1.2, e = 0.734, K = 108.3, omega = 126.3, gamma = 34):
-    φ = np.linspace(a,b,points)
-    E = excentric_anomaly(φ, e=e)
+    φ = np.linspace(a, b, points)
+    E = excentric_anomaly(φ, e = e)
     θ = true_anomaly(E, e = e)
-    vr = rv(θ,K=K,omega=omega,gamma=gamma) 
+    vr = rv(θ, K = K, omega = omega, gamma = gamma)
     return vr
 
 def orbit_function(kepler_file : str):
