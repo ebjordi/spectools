@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-def phase( JD, T0 = 55608.29, P = 29.1333, mean_anomaly = False):
+def phase( JD, T0 = 57880.63, P = 29.1333, mean_anomaly = False):
     """Returns phase given orbital parameters, default parameteres are for i 
     Orionis params updated to Eguren 2021"""
     JD = JD * np.ones_like(JD)
@@ -40,14 +40,14 @@ def excentric_anomaly(phi, e = 0.734, mean_anomaly = False):
 def true_anomaly(excentric_anomaly, e = 0.734):
     """Returns true anomaly give an excentric anomaly and excentricity"""
 
-
+    E = excentric_anomaly * np.ones_like(excentric_anomaly)
     theta = 2 * np.arctan(np.sqrt((1 + e)/(1 - e)) * np.tan(E/2))
 
     if isinstance(theta,np.ndarray):
         theta[theta < 0] = theta[theta < 0] + 2 * np.pi
-    else:
-        if theta < 0:
-            theta += 2 * np.pi
+    elif theta < 0:
+        theta += 2 * np.pi
+
     return theta
 
 
