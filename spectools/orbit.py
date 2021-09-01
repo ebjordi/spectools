@@ -51,6 +51,15 @@ def true_anomaly(excentric_anomaly, e = 0.734):
     return theta
 
 
+def rv(true_anomaly, K = 108.3,omega = 126.3,gamma = 34):
+    ω = omega * np.pi / 180
+    θ = true_anomaly
+    Vrad = K * (np.cos(θ + ω) + e * np.cos(ω))
+    return Vrad + gamma
+
+
+
+
 def orbit_function(kepler_file : str):
     """Given a kepler output file returns interpolated funtions for primary and
     secondary components of a binary system"""
