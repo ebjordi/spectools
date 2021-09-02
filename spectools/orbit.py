@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-def phase( JD, T0 = 57880.63, P = 29.1333, mean_anomaly = False):
+def phase( JD, T0 = 57880.634, P = 29.1333, mean_anomaly = False):
     """Returns phase given orbital parameters, default parameteres are for i 
     Orionis params updated to Eguren 2021"""
     JD = JD * np.ones_like(JD)
@@ -66,7 +66,7 @@ def velocity_curve_jd(JD, T0 = 57880.63, P = 29.1333, e = 0.734, K = 108.3, omeg
     vr = rv(θ, K = K, omega = omega, gamma = gamma)
     return vr
 
-def velocity_curve_from_phase(points = 100, a = 0, b = 1.2, e = 0.734, K = 108.3, omega = 126.3, gamma = 34):
+def velocity_curve_from_phase(points = 1200, a = 0, b = 1.2, e = 0.734, K = 108.3, omega = 126.3, gamma = 34):
     φ = np.linspace(a, b, points)
     E = excentric_anomaly(φ, e = e)
     θ = true_anomaly(E, e = e)
