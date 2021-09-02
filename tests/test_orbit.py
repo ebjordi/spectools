@@ -10,9 +10,8 @@ JD_phase_EA = [
 ]
 
 phase_EA=[[
-        [0.,0.11111111,0.22222222,0.33333333,0.44444444,0.55555556,0.66666667,0.77777778,0.88888889,0.],
-        [1.07319031e-14,1.43090250e+00,2.05216972e+00,2.52332009e+00,2.94040404e+00,3.34278126e+00,3.75986521e+00,4.23101559e+00,4.85228281e+00,5.36595154e-15]]]
-
+        [0.,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9],
+        [0.,1.34412783,1.94137176,2.38774944,2.77593815,3.14159265,3.50724716,3.89543586,4.34181355,4.93905748]]]
 @pytest.fixture
 def phase_true_anomaly():
     phase = []
@@ -30,7 +29,7 @@ def test_phase(jd, expected_phase, mean_anomaly):
 
 @pytest.mark.parametrize("phases,expected_mean_anomaly",phase_EA)
 def test_excentric_anomaly(phases,expected_mean_anomaly):
-    npt.assert_allclose(excentric_anomaly(phases,0.74),expected_mean_anomaly,rtol=1e-05,atol=1e-06)
+    npt.assert_allclose(excentric_anomaly(phases,0.7346),expected_mean_anomaly,rtol=1e-05,atol=1e-06)
 
 def test_true_anomaly(phase_true_anomaly):
     phase,expected_true_anomaly=phase_true_anomaly
