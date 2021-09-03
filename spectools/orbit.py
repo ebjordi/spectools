@@ -67,11 +67,13 @@ def velocity_curve_jd(JD, T0 = 57880.63, P = 29.1333, e = 0.734, K = 108.3, omeg
     return vr
 
 def velocity_curve_from_phase(points = 1200, a = 0, b = 1.2, e = 0.734, K = 108.3, omega = 126.3, gamma = 34):
+    """Return a phase distribution and corresponding radial velocity from a
+    number of points, constraints and an orbital solution"""
     φ = np.linspace(a, b, points)
     E = excentric_anomaly(φ, e = e)
     θ = true_anomaly(E, e = e)
     vr = rv(θ, K = K, omega = omega, gamma = gamma)
-    return vr
+    return φ, vr
 
 def orbit_function(kepler_file : str):
     """Given a kepler output file returns interpolated funtions for primary and
