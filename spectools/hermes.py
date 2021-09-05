@@ -4,7 +4,7 @@ import pandas as pd
 from specutils import Spectrum1D
 from spectools.utils import wavelength
 
-def extract_spectrum(filename, normalized = True):
+def open(filename, normalized = True):
     """Extract wavelengh and flux for FIES and HERMES spectra"""
     hdu = pf.open(filename)
     data = hdu[0].data
