@@ -1,6 +1,5 @@
 import astropy.io.fits as pf
-from scipy.interpolate import interp1d
-import pandas as pd
+from astropy import units as u
 from specutils import Spectrum1D
 from spectools.utils import wavelength
 
@@ -11,6 +10,6 @@ def open(filename, normalized = True):
     header = hdu[0].header
     if normalized:
         wave = wavelength(header)
-        return Spectrum1D(flux=data[0],spectral_axis=wave),header
-    return Spectrum1D(flux=data[1],spectral_axis=data[0]),header
+        return Spectrum1D(flux=data*u.adu,spectral_axis=wave*u.Angstrom),header
+    return Spectrum1D(flux=data[1]*u.adu,spectral_axis=data[0]*u.Angstrom),header
 
