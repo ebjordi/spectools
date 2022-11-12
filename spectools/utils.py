@@ -24,3 +24,12 @@ def add_UT_to_header(spectra):
         header["EPOCH"]= 2000.0
         header["UT"]=ut_float
         pf.writeto(spectrum,data,header,output_verify='ignore',overwrite=True)
+
+
+def mask_line(x,y,a,b):
+    """returns masked arrays of x[a < x < b] y[a < x < b]
+    """
+    x_ma=np.ma.masked_outside(x,a,b)
+    mask = np.ma.getmask(x_ma)
+    f_ma=np.ma.array(y,mask=mask)    
+    return x_ma,f_ma
