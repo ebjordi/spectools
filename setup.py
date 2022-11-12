@@ -7,4 +7,4 @@ setup(name='spectools',
       url='https://github.com/ebjordi/spectools.git',
       author='Jordi Eguren Brown',
       author_email='jordi.eguren.brown@gmail.com',
-      py_modules=['spectools.utils','spectools.hermes','spectools.song'])
+      py_modules=['spectools.utils','spectools.hermes','spectools.song','spectools.models'])
