@@ -4,7 +4,7 @@ from specutils.fitting import fit_generic_continuum
 from astropy.modeling.models import Chebyshev1D
 import astropy.units as u
 from specutils.manipulation import LinearInterpolatedResampler
-from pyspeckit import Spectrum
+#from pyspeckit import Spectrum
 import numpy as np
 
 def extract_line(file, order, regions = None, **kwargs):
@@ -34,21 +34,21 @@ def equidistant_resample(spectrum):
                     len(spectrum.spectral_axis))
     return resampler.resample1d(spectrum, x * u.Angstrom)
 
-def save(spectrum, filename, header = None):
-    """The only method I know so far to save a custom spectrum. Requires
-        equidistant `spectral_axis` and pyspeckit to save
-        spectrum: `spectutils.Spectrum1D`
-        filename: str output filename with or without '.fits'
-        header: astropy or dict() idk you're not my dad
-    """
-    if not filename.endswith('.fits'):
-        filename += '.fits'
-    if hasattr(spectrum,'header'):
-        header = spectrum.header
-
-    new_spectrum = Spectrum(  xarr = spectrum.spectral_axis,
-                              data = spectrum.flux,
-                            header = header)
-    new_spectrum.write(filename, type='fits')
-
-
+#def save(spectrum, filename, header = None):
+#    """The only method I know so far to save a custom spectrum. Requires
+#        equidistant `spectral_axis` and pyspeckit to save
+#        spectrum: `spectutils.Spectrum1D`
+#        filename: str output filename with or without '.fits'
+#        header: astropy or dict() idk you're not my dad
+#    """
+#    if not filename.endswith('.fits'):
+#        filename += '.fits'
+#    if hasattr(spectrum,'header'):
+#        header = spectrum.header
+#
+#    new_spectrum = Spectrum(  xarr = spectrum.spectral_axis,
+#                              data = spectrum.flux,
+#                            header = header)
+#    new_spectrum.write(filename, type='fits')
+#
+#
