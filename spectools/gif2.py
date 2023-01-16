@@ -1,12 +1,11 @@
+#! /home/jordi/bin/miniconda/envs/astro/bin/python
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import interp1d
 from astropy.constants import c
+from orbit import Orbit
 
-
-columns = ['phase','VRA','VRB','E']
-data = pd.read_csv('kepler_song.out',skiprows=1,names=columns,sep=' ')
 
 def ascii_spec(filename):
     a = np.genfromtxt(filename,delimiter = '  ')
@@ -21,7 +20,27 @@ def shift(wvl,flux,v):
     nflux = interp1d(wlprime, flux, bounds_error=False, fill_value=1)(wvl)
     return nflux
 #fijamos d,t1*,t2*
+def ratio(value,min_value=None,max_value=None):
+    if min_value is None:
+        min_value = np.min(value)
+    if max_value is None:
+        max_value = np.max(value)
+    return (value - min_value) / (max_value - min_value)
 
+def value_to_rgb(value,*args):
+        rat = ratio(value,*args)
+        r = (255 * np.ones_like(value) * (1.- rat)).astype(int)
+        g = (255 * np.ones_like(value) * (1.-abs(2. * rat-1.))).astype(int)
+        b = (255 * np.ones_like(value) * rat).astype(int)
+#        rgbs = ["#{:02x}0000".format(ri) for ri in r]
+
+        rgbs = ["#{:02x}00{:02x}".format(ri,gi,bi) for ri,gi,bi in zip(r,g,b)]
+        return rgbs#"#{:02x}{:02x}".format(r,g,b)
+    
+    
+columns = ['phase','VRA','VRB','E']
+data = pd.read_csv('kepler_song.out',skiprows=1,names=columns,sep=' ')
+    
 wb,fb = ascii_spec('./T300g380.asc')
 #len(wb)
 #len(fb)
@@ -32,6 +51,7 @@ wa,fa = ascii_spec('./T350g370.asc')
 fa=fa[wa<7000]
 wa=wa[wa<7000]
 
+python_orb = Orbit.from_linspace(100, e=.734628,omega=126.314, K1= 108.311,K2=-192.327,gamma = 0.)
 
 
 d=0.78
@@ -44,9 +64,24 @@ HeII = [(4190,4210),(4535,4550),(4680,4697),(5400,5423)]
 H_labels = ['Hδ', 'Hγ', 'Hβ', 'Hα']
 HeI_labels = ['HeI+II4026','HeI4388','HeI4471','HeI5875']
 HeII_labels = ['HeII4200','HeII4542','HeII4686','HeII5412']
+
+
+a = 1
+r = (a*(1-python_orb.e**2))/(1+python_orb.e*np.cos(python_orb.theta))
+r2=(a*(1+python_orb.e**2))/(1+python_orb.e*np.cos(python_orb.theta))
+o = np.deg2rad(python_orb.omega)
+min_v = python_orb.vr1.min()
+max_v = python_orb.vr1.max()
+rwb = value_to_rgb(python_orb.vr1)
+rwb2 = value_to_rgb(python_orb.vr2)
+
 for av,bv in zip(data['VRA'][:100],data['VRB'][:100]):
     fig2,axs = plt.subplots(4,4,sharey='row',figsize=plt.figaspect(0.75),
                         gridspec_kw={"hspace":0.5, 'wspace': 0.05})
+    axs[3,2]=plt.subplot2grid((4,4), (3,2), rowspan=1, colspan=1,fig=fig2,polar=True)
+
+    axs[3,2].set_xticks([])
+    axs[3,2].sharey = None
     fb_s=shift(wb,fa,bv)
     fa_s=shift(wa,fb,av)
     if len(fb_s) > len(fa_s):
@@ -64,7 +99,6 @@ for av,bv in zip(data['VRA'][:100],data['VRB'][:100]):
         axs[0,i].set_title(H_labels[i],fontsize='xx-small')
         axs[0,i].set_xticks(range(H[i][0],H[i][1], 20))
         axs[0,i].tick_params(labelsize=5)
-#        axs[0,i].plot(ww,ff,'gray',alpha=0.5)              #plot spec 0.5 opacity
         axs[0,i].set_xlim(region)                          #plot region
         axs[0,i].set_ylim(0.56,1.05)
 
@@ -94,18 +128,33 @@ for av,bv in zip(data['VRA'][:100],data['VRB'][:100]):
     #Draw orbit
     for ax in axs[3,:]:
         ax.tick_params(labelsize=5)
-    axs[3,-1].set_title('Velocidades Radiales vs fase',fontsize='xx-small' )
-#        axs[2,i].plot(ww,ff,'gray',alpha=0.5)
+    axs[3,-1].set_title('velocidades radiales vs fase',fontsize='xx-small' )
     axs[3,-1].plot(data['phase'],data['VRA'],linewidth=0.3)
     axs[3,-1].scatter(data['phase'][ticker],av,c='b',s=0.5)
     axs[3,-1].plot(data['phase'],data['VRB'],linewidth=0.3)
     axs[3,-1].scatter(data['phase'][ticker],bv,c='r',s=0.5)
-    
+
+    axs[3,2].plot(python_orb.theta+o, r,c='k',alpha=0.5,lw=0.5)
+    axs[3,2].plot(python_orb.theta+o+np.pi, r2,c='k',alpha=0.5,lw=0.5)
+    axs[3,2].scatter(python_orb.theta[ticker]+o, r[ticker],s=10,c=rwb[i])
+    axs[3,2].scatter(python_orb.theta[ticker]+o+np.pi, r2[ticker],s=10,c=rwb2[i])
+
     if (ticker < 50):
         axs[3,-1].scatter(data['phase'][ticker]+1,av,c='b',s=0.5)
         axs[3,-1].scatter(data['phase'][ticker]+1,bv,c='r',s=0.5)
+#        axs[3,2].plot(python_orb.theta+o, r,c='k',alpha=0.5,lw=0.5)
+#        axs[3,2].plot(python_orb.theta+o+np.pi, r2,c='k',alpha=0.5,lw=0.5)
+
+#        axs[3,2].scatter(python_orb.theta[ticker]+o, r[ticker],s=10,c=rwb[i])
+#        axs[3,2].scatter(python_orb.theta[ticker]+o+np.pi, r2[ticker],s=10,c=rwb2[i])
+    axs[3,3].sharey = None
+
     #Save Plot
-    plt.savefig('sp_'+str(data['phase'][ticker])+'.png',dpi=800)
+    plt.savefig(f'sp_0.{ticker}.png',dpi=800)
     ticker += 1
     #Clear RAM
     plt.close()
+    
+    
+#if __name__=='__main__':
+#    main()
