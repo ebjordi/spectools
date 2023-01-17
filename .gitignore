@@ -5,3 +5,15 @@ build/*
 spectools.egg-info/
 */.ipynb_checkpoints/
 *.ipynb
+*.gif*
+*.png
+*.asc
+src/spectools/__pycache__/models.cpython-38.pyc
+src/spectools/__pycache__/song.cpython-310.pyc
+src/spectools/__pycache__/utils.cpython-37.pyc
+src/spectools/__pycache__/utils.cpython-38.pyc
+src/spectools/__pycache__/utils.cpython-310.pyc
+src/spectools/.ipynb_checkpoints/gif-checkpoint.py
+src/spectools/.ipynb_checkpoints/gif2-checkpoint.py
+src/spectools/.ipynb_checkpoints/utils-checkpoint.py
+.ipynb_checkpoints/setup-checkpoint.py
