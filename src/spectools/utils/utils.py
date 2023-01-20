@@ -3,6 +3,7 @@ import astropy.constants as c
 import numpy as np
 from datetime import datetime
 from scipy.interpolate import interp1d
+from typing import Union
 
 def get_keyword(header,keyword : str):
     """Extracts keyword from header spectra"""
