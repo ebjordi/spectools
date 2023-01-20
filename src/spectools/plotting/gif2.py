@@ -5,6 +5,7 @@ import numpy as np
 from scipy.interpolate import interp1d
 from astropy.constants import c
 from orbit import Orbit
+#from utils import ascii_spec, shift#, open_shift
 
 cvel = c.to('km/s').value    
 
@@ -60,8 +61,8 @@ def main():#kwargs de orbit o archivo kepler, espectros a mixear, factor d diluc
         for ax in axs[3,:]:
             ax.sharey = None
         #doppler segun v1,v2
-        fb_s=shift(wb,fa,v2) #puedo hacer un dict para achicar esto
-        fa_s=shift(wa,fb,v1) #y esto
+        fb_s=shift(wb,fb,v2) #puedo hacer un dict para achicar esto
+        fa_s=shift(wa,fa,v1) #y esto
         if len(fb_s) > len(fa_s):
             arr_len = len(fa_s)
         else: arr_len = len(fb_s)
@@ -72,8 +73,8 @@ def main():#kwargs de orbit o archivo kepler, espectros a mixear, factor d diluc
 
         for i,region in enumerate(H):
             axs[0,i].plot(w1,f1,linewidth=0.5,color= '#BC48EE')
-            axs[0,i].plot(w1,fa_s+d+0.01,'--',linewidth=0.5,color= '#BC4822',alpha=0.7)
-            axs[0,i].plot(w1,fb_s+(1-d)+0.01,'--',linewidth=0.5,color= '#332089',alpha=0.7) #plot models
+            axs[0,i].plot(w1,fa_s+(1-d)+0.01,'--',linewidth=0.5,color= '#BC4822',alpha=0.7)
+            axs[0,i].plot(w1,fb_s+d+0.01,'--',linewidth=0.5,color= '#332089',alpha=0.7) #plot models
             axs[0,i].set_title(H_labels[i],fontsize='xx-small')
             axs[0,i].set_xticks(range(H[i][0],H[i][1], 20))
             axs[0,i].tick_params(labelsize=5)
@@ -82,8 +83,8 @@ def main():#kwargs de orbit o archivo kepler, espectros a mixear, factor d diluc
 
         for i,region in enumerate(HeI):
             axs[1,i].plot(w1,f1,linewidth=0.5,color= '#BC48EE')
-            axs[1,i].plot(w1,fa_s+d+0.01,'--',linewidth=0.5,color= '#BC4822',alpha=0.7)
-            axs[1,i].plot(w1,fb_s+(1-d)+0.01,'--',linewidth=0.5,color= '#332089',alpha=0.7) #plot models
+            axs[1,i].plot(w1,fa_s+(1-d)+0.01,'--',linewidth=0.5,color= '#BC4822',alpha=0.7)
+            axs[1,i].plot(w1,fb_s+d+0.01,'--',linewidth=0.5,color= '#332089',alpha=0.7) #plot models
             axs[1,i].set_title(HeI_labels[i],fontsize='xx-small')
             axs[1,i].set_xticks(range(HeI[i][0],HeI[i][1], 10))
             axs[1,i].tick_params(labelsize=5)
@@ -93,8 +94,8 @@ def main():#kwargs de orbit o archivo kepler, espectros a mixear, factor d diluc
 
         for i,region in enumerate(HeII):
             axs[2,i].plot(w1,f1,linewidth=0.5,color= '#BC48EE')
-            axs[2,i].plot(w1,fa_s+d+0.01,'--',linewidth=0.5,color= '#BC4822',alpha=0.7)
-            axs[2,i].plot(w1,fb_s+(1-d)+0.01,'--',linewidth=0.5,color= '#332089',alpha=0.7) #plot models
+            axs[2,i].plot(w1,fa_s+(1-d)+0.01,'--',linewidth=0.5,color= '#BC4822',alpha=0.7)
+            axs[2,i].plot(w1,fb_s+d+0.01,'--',linewidth=0.5,color= '#332089',alpha=0.7) #plot models
             axs[2,i].set_title(HeII_labels[i],fontsize='xx-small' )
     #        axs[2,i].plot(ww,ff,'gray',alpha=0.5)
             axs[2,i].set_xticks(range(HeII[i][0],HeII[i][1], 15))
