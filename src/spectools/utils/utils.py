@@ -137,3 +137,15 @@ def open_shift(A : str, B : str , va : Union(float, np.float64), vb : Union(floa
     fb_s=fb_shift[:arr_len]
     # A partir de acá los dos modelos tienen el mismo eje de dispersion
     return w1,fa_s,fb_s
+
+
+def cut_resample(w_model,f_model,w_obj,f_obj,a,b):
+    x_o = np.where((w_obj>a)&(w_obj<b),w_obj,0)
+    y_o = f_obj[x_o>0]
+    x_o = x_o[x_o>0]
+    
+    x_e = np.where((w_model>a)&(w_model<b),w_model,0)
+    y_e = f_model[x_e>0]
+    x_e = x_e[x_e>0]
+    y_e = interp1d(x_e, y_e, bounds_error=False, fill_value=1)(x_o)
+    return x_o,y_o,y_e
