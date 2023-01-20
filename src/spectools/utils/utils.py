@@ -91,6 +91,7 @@ def displacement_avg(measurements : Union(list, np.array), star):
 def displacement(measurement, line, star):
     """Calculate redshift velocity for lines meassured 
     Tailored for Iota Ori A"""
+    cvel =  c.c.to('km/s').value
 
     if isinstance(line, int):
         lambda_0 = lines_dict[str(line)]
@@ -98,9 +99,40 @@ def displacement(measurement, line, star):
         lambda_0 = line
 
     lines_dict = {4025:4025.6, 4713 : 4713.146, 4921 : 4921.931, 5015 : 5015.68, 5411 : 5411.52, 5592 : 5592.252}
-    c =  299792.458
 
     if star == 'secondary':
         lambda_0 = lambda_0[:-2]
-    vels = c * (np.array((measurement) - lambda_0) / lambda_0)
+    vels = cvel * (np.array((measurement) - lambda_0) / lambda_0)
     avg = vels.mean()
+
+
+def open_shift(A : str, B : str , va : Union(float, np.float64), vb : Union(float, np.float64), 
+               a : Union(float,np.float64) = None, b : Union(float,np.float64) = None ):
+    wa,fa = ascii_spec(A)
+    wb,fb = ascii_spec(B)
+    #Aplico cotas 
+    if a is not None:
+        fa = fa[wa>a]
+        wa = wa[wa>a]
+        fb = fb[wb>a]
+        wb = wb[wb>a]
+    if b is not None:
+        fa = fa[wa<b]
+        wa = wa[wa<b]
+        fb = fb[wb<b]
+        wb = wb[wb<b]
+    fa_shift = shift(wa, fa, va)
+    fb_shift = shift(wb, fb, vb, wa)#va a resamplear con el eje de wa, 
+                                    #si son modelos del mismo programa 
+                                    #deberían ser similares, pero el 
+                                    #doppler shift puede cambiarlo
+    #Me aseguro que los arrays tengan el mismo largo
+    if len(fb_shift) > len(fa_shift):
+        arr_len = len(fa_shift)
+    else: arr_len = len(fb_shift)
+    
+    w1=wa[:arr_len]
+    fa_s=fa_shift[:arr_len]
+    fb_s=fb_shift[:arr_len]
+    # A partir de acá los dos modelos tienen el mismo eje de dispersion
+    return w1,fa_s,fb_s
