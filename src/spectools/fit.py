@@ -7,6 +7,8 @@ from typing import Union
 from astropy.constants import c
 import astropy.io.fits as pf
 from orbit import Orbit
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import concurrent
 
 def main():
     wo,fo=open_file('HD37043_20170408_201940_M_V85000.fits')
@@ -26,13 +28,13 @@ def main():
     labels_y = [str(d) for d in dils]
     labels_x = [str(l) for l in lines]
 
-    tests = OC_dils(w1,fa_s,fb_s,wo,fo,dils,lines)
+    tests = OC_dils(w1,fa_s,fb_s,wo,fo,dils,lines)#OC_dils_parallel(w1,fa_s,fb_s,wo,fo,dils,lines)
     print(tests)
     return
 
 
-def OC_dils(w_model :  Union(np.array), f_model_a :  Union(np.array), f_model_b :  Union(np.array),
-            w_object :  Union(np.array), f_object :  Union(np.array), dilutions :  Union(list,np.array), regions :  Union(list,np.array)):
+def OC_dils(w_model :  np.array, f_model_a :  np.array, f_model_b :  np.array,
+            w_object :  np.array, f_object :  np.array, dilutions :  Union(list,np.array), regions :  Union(list,np.array)):
 
     #Hacemos una matriz de (O-C)**2 donde las filas son dilusion y las columnas regiones que pasamos como argumento
     region_oc = np.ndarray((len(dilutions),len(regions)))
@@ -45,6 +47,33 @@ def OC_dils(w_model :  Union(np.array), f_model_a :  Union(np.array), f_model_b 
             x,y,y_model = cut_resample(w_model,f1,w_object,f_object,a,b)
             region_oc[i][j] = (np.square(y-y_model) / y_model).sum()
     return region_oc
+
+def OC_dils_parallel(w_model : np.array, f_model_a : np.array, f_model_b : np.array,
+                    w_object : np.array, f_object : np.array, dilutions : Union(list,np.array), regions : Union(list,np.array)):
+
+    region_oc = np.ndarray((len(dilutions),len(regions)))
+    with ThreadPoolExecutor() as executor:
+        futures = {}
+        for i,d in enumerate(dilutions):
+            fa_ = f_model_a * d
+            fb_ = f_model_b * (1-d)
+            f1 = fa_+fb_
+            future = executor.submit(calculate_OC,f1,w_model,f_object,w_object,regions,i,region_oc)
+            futures[future] = i
+    for future in concurrent.futures.as_completed(futures):
+        i = futures[future]
+        try:
+            region_oc[i] = future.result()
+        except Exception as e:
+            print(f'{i} generated an exception: {e}')
+    return region_oc
+
+def calculate_OC(f1,w_model,f_object,w_object,regions,i,region_oc):
+    for j,ab in enumerate(regions):
+        a,b=ab
+        x,y,y_model = cut_resample(w_model,f1,w_object,f_object,a,b)
+        region_oc[i][j] = (np.square(y-y_model) / y_model).sum()
+    return region_oc[i]
 
 def open_shift(A : str, B : str , va :  Union(float, np.float64), vb :  Union(float, np.float64), 
                a :  Union(float,np.float64) = None, b :  Union(float,np.float64) = None ):
