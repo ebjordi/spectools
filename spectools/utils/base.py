@@ -78,7 +78,7 @@ def get_keyword(file : str,keyword : str):
 
 
 #set the templates to 0 km/s
-def displacement_avg(measurements : Union(list, np.array), star):
+def displacement_avg(measurements : Union[list, np.array], star):
     """Calculate redshift velocities and average velocity starting for lines meassured by hand
     Tailored for Iota Ori A"""
     lambda_0 = np.array([4025.6, 4713.146, 4921.931, 5015.68, 5411.52, 5592.252])
@@ -107,8 +107,8 @@ def displacement(measurement, line, star):
     avg = vels.mean()
 
 
-def open_shift(A : str, B : str , va : Union(float, np.float64), vb : Union(float, np.float64), 
-               a : Union(float,np.float64) = None, b : Union(float,np.float64) = None ):
+def open_shift(A : str, B : str , va : Union[float, np.float64], vb : Union[float, np.float64], 
+               a : Union[float,np.float64] = None, b : Union[float,np.float64] = None ):
     wa,fa = ascii_spec(A)
     wb,fb = ascii_spec(B)
     #Aplico cotas 

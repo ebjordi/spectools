@@ -8,3 +8,4 @@ spectools.egg-info/
 */*.png
 */*.ipynb
 tests/data/*
+.vscode/
