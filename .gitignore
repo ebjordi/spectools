@@ -1,6 +1,10 @@
 build/
 build/*
 *.swp
-*/__pycache__
+*/__pycache__/*
 spectools.egg-info/
 */.ipynb_checkpoints/
+*/*.gif
+*/*.png
+*/*.ipynb
+tests/data/*
