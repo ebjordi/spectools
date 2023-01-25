@@ -1,4 +1,3 @@
-import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import interp1d
@@ -8,8 +7,8 @@ from orbit import Orbit
 
 # fijamos d,t1*,t2*
 def main(
-    A="../T300g380.asc",
-    B="../T350g370.asc",
+    A="./T300g380.asc",
+    B="./T350g370.asc",
     d=0.78,
     regions1=None,
     regions2=None,
