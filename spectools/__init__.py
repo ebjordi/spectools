@@ -1,2 +1,2 @@
 #from . import hermes,song
-from . import utils,plotting
+from . import utils,plotting,fit
