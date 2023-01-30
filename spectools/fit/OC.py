@@ -1,5 +1,5 @@
 import numpy as np
-from utils import cut_resample
+from spectools.utils import cut_resample
 from typing import Union
 from astropy.constants import c
 from orbit import Orbit
