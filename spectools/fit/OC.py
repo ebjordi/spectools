@@ -42,7 +42,7 @@ def OC_dils(w_model :  np.array, f_model_a :  np.array, f_model_b :  np.array,
         for j,ab in enumerate(regions):
             a,b=ab
             x,y,y_model = cut_resample(w_model,f1,w_object,f_object,a,b)
-            region_oc[i][j] = (np.square(y-y_model) / y_model).sum()
+            region_oc[i][j] = (np.square(y-y_model) / y_model).sum() / len(y)
     return region_oc
 
 def OC_dils_parallel(w_model : np.array, f_model_a : np.array, f_model_b : np.array,
